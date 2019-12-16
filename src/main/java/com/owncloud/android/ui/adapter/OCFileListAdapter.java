@@ -24,7 +24,6 @@
 
 package com.owncloud.android.ui.adapter;
 
-import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.ContentValues;
 import android.content.Context;
@@ -330,11 +329,7 @@ public class OCFileListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             OCFileListHeaderViewHolder headerViewHolder = (OCFileListHeaderViewHolder) holder;
             String text = currentDirectory.getRichWorkspace();
 
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                headerViewHolder.headerText.setText(PreviewTextFragment.getRenderedMarkdownText(mContext, text));
-            } else {
-                headerViewHolder.headerText.setText(text);
-            }
+            PreviewTextFragment.setText(headerViewHolder.headerText, text, mContext);
             headerViewHolder.headerView.setOnClickListener(v -> ocFileListFragmentInterface.onHeaderClicked());
         } else {
             OCFileListGridImageViewHolder gridViewHolder = (OCFileListGridImageViewHolder) holder;

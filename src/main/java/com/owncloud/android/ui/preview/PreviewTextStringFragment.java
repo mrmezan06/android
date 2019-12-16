@@ -148,7 +148,7 @@ public class PreviewTextStringFragment extends PreviewTextFragment {
     void loadAndShowTextPreview() {
         if (mTextPreview != null) {
             mOriginalText = getFile().getRichWorkspace();
-            setText(mTextPreview, mOriginalText, getFile());
+            setText(mTextPreview, mOriginalText, getContext());
             mTextPreview.setVisibility(View.VISIBLE);
         }
 

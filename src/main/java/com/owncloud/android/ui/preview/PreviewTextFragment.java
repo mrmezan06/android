@@ -39,11 +39,9 @@ import android.widget.TextView;
 import com.nextcloud.client.account.UserAccountManager;
 import com.nextcloud.client.di.Injectable;
 import com.owncloud.android.R;
-import com.owncloud.android.datamodel.OCFile;
 import com.owncloud.android.lib.common.utils.Log_OC;
 import com.owncloud.android.ui.activity.FileDisplayActivity;
 import com.owncloud.android.ui.fragment.FileFragment;
-import com.owncloud.android.utils.MimeTypeUtil;
 import com.owncloud.android.utils.StringUtils;
 import com.owncloud.android.utils.ThemeUtils;
 
@@ -167,7 +165,7 @@ public abstract class PreviewTextFragment extends FileFragment implements Search
                         mTextPreview.setText(Html.fromHtml(coloredText.replace("\n", "<br \\>")));
                     }
                 } else {
-                    setText(mTextPreview, mOriginalText, getFile());
+                    setText(mTextPreview, mOriginalText, getContext());
                 }
             }, delay);
         }
@@ -177,7 +175,7 @@ public abstract class PreviewTextFragment extends FileFragment implements Search
         }
     }
 
-    public static Spanned getRenderedMarkdownText(Context context, String markdown) {
+    protected static Spanned getRenderedMarkdownText(Context context, String markdown) {
         Prism4j prism4j = new Prism4j(new MarkwonGrammarLocator());
         Prism4jTheme prism4jTheme = Prism4jThemeDefault.create();
         TaskListDrawable drawable = new TaskListDrawable(Color.GRAY, Color.GRAY, Color.WHITE);
@@ -209,10 +207,9 @@ public abstract class PreviewTextFragment extends FileFragment implements Search
         getActivity().runOnUiThread(() -> getActivity().onBackPressed());
     }
 
-    protected void setText(TextView textView, String text, OCFile file) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN
-            && MimeTypeUtil.MIMETYPE_TEXT_MARKDOWN.equals(file.getMimeType())) {
-            textView.setText(getRenderedMarkdownText(getContext(), text));
+    public static void setText(TextView textView, String text, Context context) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            textView.setText(getRenderedMarkdownText(context, text));
         } else {
             textView.setText(text);
         }
